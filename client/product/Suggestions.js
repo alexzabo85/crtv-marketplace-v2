@@ -10,8 +10,10 @@ import Icon from '@material-ui/core/Icon'
 import Divider from '@material-ui/core/Divider'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import CardMedia from '@material-ui/core/CardMedia'
 import AddToCart from './../cart/AddToCart'
+// import Card, { CardContent, CardMedia, CardActions } from 'material-ui/Card'
 
 const useStyles = makeStyles(theme => ({
   root: theme.mixins.gutters({
@@ -40,12 +42,13 @@ const useStyles = makeStyles(theme => ({
     padding: '16px 8px 0px'
   },
   cover: {
-    width: '65%',
-    height: 130,
+    width: 150,// '65%',
+    height: 100,
     margin: '8px'
   },
   controls: {
-    marginTop: '8px'
+    // marginTop: '8px'
+    right: '8px'
   },
   date: {
     color: 'rgba(0, 0, 0, 0.4)'
@@ -58,14 +61,14 @@ const useStyles = makeStyles(theme => ({
     height: '28px'
   },
   productTitle: {
-    fontSize: '1.15em',
+    fontSize: '3rem',
     marginBottom: '5px'
   },
   subheading: {
     color: 'rgba(88, 114, 128, 0.67)'
   },
   actions: {
-    float: 'right',
+    float: 'left',
     marginRight: '6px'
   },
   price: {
@@ -73,7 +76,15 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '3',
     paddingLeft: '8px',
     color: theme.palette.text.secondary
-  }
+  },
+  addCart: {
+    // float: 'right',
+    width: 50,
+    height: 50,
+    padding: '10px 12px',
+    borderRadius: '0.25em',
+    backgroundColor: '#5f7c8b'
+  },
 }))
 
 export default function Suggestions(props) {
@@ -94,28 +105,45 @@ export default function Suggestions(props) {
               />
               <div className={classes.details}>
                 <CardContent className={classes.content}>
-                  <Link to={'/product/' + item._id}><Typography variant="h3" component="h3" className={classes.productTitle} color="primary">{item.name}</Typography></Link>
-                  <Link to={'/shops/' + item.shop._id}>
+                  <Link to={'/product/' + item._id}>
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      className={classes.productTitle}
+                      color="primary"
+                    >{item.name}</Typography>
+                  </Link>
+                  {/* <Link to={'/shops/' + item.shop._id}>
                     <Typography type="subheading" className={classes.subheading}>
                       <Icon className={classes.icon}>shopping_basket</Icon> {item.shop.name}
                     </Typography>
-                  </Link>
-                  <Typography component="p" className={classes.date}>
+                  </Link> */}
+                  {/* <Typography component="p" className={classes.date}>
                     Added on {(new Date(item.created)).toDateString()}
-                  </Typography>
-                </CardContent>
-                <div className={classes.controls}>
-                  <Typography type="subheading" component="h3" className={classes.price} color="primary">$ {item.price}</Typography>
-                  <span className={classes.actions}>
+                  </Typography> */}
+                  {/* <div className={classes.controls}> */}
+                  {/* <Typography type="subheading" component="h3" className={classes.price} color="primary">$ {item.price}</Typography> */}
+                  {/* <span className={classes.actions}>
                     <Link to={'/product/' + item._id}>
                       <IconButton color="secondary" dense="dense">
                         <ViewIcon className={classes.iconButton} />
                       </IconButton>
                     </Link>
-                    <AddToCart item={item} />
-                  </span>
-                </div>
+                  </span> */}
+                </CardContent>
               </div>
+
+              <CardActions className={classes.actions} >
+                <div className={classes.controls}>
+
+                  <AddToCart cartStyle={classes.addCart} item={item} />
+                </div>
+              </CardActions>
+
+
+              {/* <AddToCart item={item} /> */}
+              {/* <AddToCart item={item} /> */}
+              {/* </div> */}
             </Card>
             <Divider />
           </span>
