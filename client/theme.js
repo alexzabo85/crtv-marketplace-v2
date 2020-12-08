@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { blueGrey, lightGreen } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
-  direction: 'rtl',
+  // direction: 'rtl',
   palette: {
     primary: {
       light: '#8eacbb',
