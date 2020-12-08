@@ -12,17 +12,29 @@ import Badge from '@material-ui/core/Badge'
 import cart from './../cart/cart-helper'
 import Grid from '@material-ui/core/Grid'
 
+const menuStyle = {
+  fontSize: '1.5rem',
+  margin: '10px'
+}
 const isActive = (history, path) => {
   if (history.location.pathname == path)
-    return { color: '#bef67a' }
+    return {
+      color: '#bef67a'
+    }
   else
-    return { color: '#ffffff' }
+    return {
+      color: '#ffffff'
+    }
 }
 const isPartActive = (history, path) => {
   if (history.location.pathname.includes(path))
-    return { color: '#bef67a' }
+    return {
+      color: '#bef67a'
+    }
   else
-    return { color: '#ffffff' }
+    return {
+      color: '#ffffff'
+    }
 }
 const Menu = withRouter(({ history }) => (
   <AppBar position="static">
@@ -32,7 +44,7 @@ const Menu = withRouter(({ history }) => (
       </Typography> */}
       <div>
         <Link to="/">
-          <IconButton aria-label="Home" style={isActive(history, "/")}>
+          <IconButton aria-label="Home" style={{ ...isActive(history, "/"), ...menuStyle }}>
             <HomeIcon />
           </IconButton>
         </Link>
@@ -43,23 +55,23 @@ const Menu = withRouter(({ history }) => (
           <Button style={isActive(history, "/auctions/all")}>All Auctions</Button>
         </Link> */}
         <Link to="/cart">
-          <Button style={isActive(history, "/cart")}>
+          <Button style={{ ...isActive(history, "/cart"), ...menuStyle }}>
             עגלת קניות
-            <Badge invisible={false} color="secondary" badgeContent={cart.itemTotal()} style={{ 'marginLeft': '7px' }}>
+            <Badge invisible={false} color="secondary" badgeContent={cart.itemTotal()} style={{ 'marginRight': '10px' }}>
               <CartIcon />
             </Badge>
           </Button>
         </Link>
       </div>
-      <div style={{ 'position': 'absolute', 'right': '10px' }}><span style={{ 'float': 'right' }}>
+      <div style={{ 'position': 'absolute', 'left': '10px' }}><span style={{ 'float': 'right' }}>
         {
           !auth.isAuthenticated() && (<span>
             <Link to="/signup">
-              <Button style={isActive(history, "/signup")}>רישום
+              <Button style={{ ...isActive(history, "/signup"), ...menuStyle }}>רישום
             </Button>
             </Link>
             <Link to="/signin">
-              <Button style={isActive(history, "/signin")}>כניסה
+              <Button style={{ ...isActive(history, "/signin"), ...menuStyle }}>כניסה
             </Button>
             </Link>
           </span>)
@@ -67,16 +79,20 @@ const Menu = withRouter(({ history }) => (
         {
           auth.isAuthenticated() && (<span>
             {auth.isAuthenticated().user.seller && (<>
-              <Link to="/seller/shops"><Button style={isPartActive(history, "/seller/")}>My Shops</Button></Link>
+              <Link to="/seller/shops"><Button style={{ ...isPartActive(history, "/seller/"), ...menuStyle }}>החנות שלי</Button></Link>
               {/* <Link to="/myauctions"><Button style={isPartActive(history, "/myauctions")}>My Auctions</Button></Link> */}
             </>
             )}
             <Link to={"/user/" + auth.isAuthenticated().user._id}>
-              <Button style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}>My Profile</Button>
+              <Button style={{ ...isActive(history, "/user/" + auth.isAuthenticated().user._id), ...menuStyle }}>פרטי משתמש</Button>
             </Link>
-            <Button color="inherit" onClick={() => {
-              auth.clearJWT(() => history.push('/'))
-            }}>Sign out</Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                auth.clearJWT(() => history.push('/'))
+              }}
+              style={menuStyle}
+            >יציאה</Button>
           </span>)
         }
       </span></div>
