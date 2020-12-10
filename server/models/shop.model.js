@@ -13,12 +13,20 @@ const ShopSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  address: {
+    type: String,
+    trim: true
+  },
+  phone: {
+    type: String,
+    trim: true
+  },
   updated: Date,
   created: {
     type: Date,
     default: Date.now
   },
-  owner: {type: mongoose.Schema.ObjectId, ref: 'User'}
+  owner: { type: mongoose.Schema.ObjectId, ref: 'User' }
 })
 
 export default mongoose.model('Shop', ShopSchema)
