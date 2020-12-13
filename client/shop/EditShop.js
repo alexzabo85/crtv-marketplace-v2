@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -10,10 +10,11 @@ import Avatar from '@material-ui/core/Avatar'
 import auth from './../auth/auth-helper'
 import FileUpload from '@material-ui/icons/AddPhotoAlternate'
 import { makeStyles } from '@material-ui/core/styles'
-import {read, update} from './api-shop.js'
-import {Redirect} from 'react-router-dom'
+import { read, update } from './api-shop.js'
+import { Redirect } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import MyProducts from './../product/MyProducts'
+import { CardMedia } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,10 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     textAlign: 'center',
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
+    maxWidth: 600,
+    margin: 'auto'
+
   },
   title: {
     margin: theme.spacing(2),
@@ -50,25 +54,33 @@ const useStyles = makeStyles(theme => ({
     height: 60,
     margin: 'auto'
   },
+  image: {
+    width: 120,
+    height: 120,
+    margin: '10px'
+  },
   input: {
     display: 'none'
   },
-  filename:{
-    marginLeft:'10px'
+  filename: {
+    marginLeft: '10px'
   }
 }))
 
-export default function EditShop ({match}) {
+export default function EditShop({ match }) {
   const classes = useStyles()
   const [values, setValues] = useState({
-      name: '',
-      description: '',
-      image: '',
-      redirect: false,
-      error: '',
-      id: ''
+    name: '',
+    description: '',
+    address: '',
+    phone: '',
+    image: '',
+    redirect: false,
+    error: '',
+    id: ''
   })
   const jwt = auth.isAuthenticated()
+
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -76,12 +88,20 @@ export default function EditShop ({match}) {
       shopId: match.params.shopId
     }, signal).then((data) => {
       if (data.error) {
-        setValues({...values, error: data.error})
+        setValues({ ...values, error: data.error })
       } else {
-        setValues({...values, id: data._id, name: data.name, description: data.description, owner: data.owner.name})
+        setValues({
+          ...values,
+          id: data._id,
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          phone: data.phone,
+          owner: data.owner.name
+        })
       }
     })
-    return function cleanup(){
+    return function cleanup() {
       abortController.abort()
     }
   }, [])
@@ -91,15 +111,17 @@ export default function EditShop ({match}) {
     values.name && shopData.append('name', values.name)
     values.description && shopData.append('description', values.description)
     values.image && shopData.append('image', values.image)
-    update({
-      shopId: match.params.shopId
-    }, {
-      t: jwt.token
-    }, shopData).then((data) => {
+    values.address && shopData.append('address', values.address)
+    values.phone && shopData.append('phone', values.phone)
+    update(
+      { shopId: match.params.shopId },
+      { t: jwt.token },
+      shopData
+    ).then((data) => {
       if (data.error) {
-        setValues({...values, error: data.error})
+        setValues({ ...values, error: data.error })
       } else {
-        setValues({...values, 'redirect': true})
+        setValues({ ...values, 'redirect': true })
       }
     })
   }
@@ -107,61 +129,99 @@ export default function EditShop ({match}) {
     const value = name === 'image'
       ? event.target.files[0]
       : event.target.value
-    setValues({...values,  [name]: value })
+    setValues({ ...values, [name]: value })
   }
 
-    const logoUrl = values.id
-          ? `/api/shops/logo/${values.id}?${new Date().getTime()}`
-          : '/api/shops/defaultphoto'
-    if (values.redirect) {
-      return (<Redirect to={'/seller/shops'}/>)
-    }
-    return (<div className={classes.root}>
-      <Grid container spacing={8}>
-        <Grid item xs={6} sm={6}>
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography type="headline" component="h2" className={classes.title}>
-                Edit Shop
+  const logoUrl = values.id
+    ? `/api/shops/logo/${values.id}?${new Date().getTime()}`
+    : '/api/shops/defaultphoto'
+  if (values.redirect) {
+    return (<Redirect to={'/seller/shops'} />)
+  }
+  return (
+    <div className={classes.root}>
+      {/* <Grid container spacing={8} justify='center'> */}
+      {/* <Grid item xs={6} > */}
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography type="headline" component="h2" className={classes.title}>
+            עריכת פרטי חנות
               </Typography>
-              <br/>
-              <Avatar src={logoUrl} className={classes.bigAvatar}/><br/>
-              <input accept="image/*" onChange={handleChange('image')} className={classes.input} id="icon-button-file" type="file" />
-              <label htmlFor="icon-button-file">
-                <Button variant="contained" color="default" component="span">
-                  Change Logo
-                  <FileUpload/>
-                </Button>
-              </label> <span className={classes.filename}>{values.image ? values.image.name : ''}</span><br/>
-              <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
-              <TextField
-                id="multiline-flexible"
-                label="Description"
-                multiline
-                rows="3"
-                value={values.description}
-                onChange={handleChange('description')}
-                className={classes.textField}
-                margin="normal"
-              /><br/>
-              <Typography type="subheading" component="h4" className={classes.subheading}>
-                Owner: {values.owner}
-              </Typography><br/>
-              {
-                values.error && (<Typography component="p" color="error">
-                    <Icon color="error" className={classes.error}>error</Icon>
-                    {values.error}
-                  </Typography>)
-              }
-            </CardContent>
-            <CardActions>
-              <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Update</Button>
-            </CardActions>
-          </Card>
-          </Grid>
-          <Grid item xs={6} sm={6}>
-            <MyProducts shopId={match.params.shopId}/>
-          </Grid>
-        </Grid>
-    </div>)
+          <br />
+          <img
+            align="center"
+            src={logoUrl}
+            // width="150px"
+            className={classes.image}
+          />
+          <br />
+          {/* <Avatar src={logoUrl} className={classes.bigAvatar} /><br /> */}
+          <input accept="image/*" onChange={handleChange('image')} className={classes.input} id="icon-button-file" type="file" />
+          <label htmlFor="icon-button-file">
+            <Button variant="contained" color="default" component="span">
+              הוספת לוגו
+                  <FileUpload />
+            </Button>
+          </label> <span className={classes.filename}>{values.image ? values.image.name : ''}</span><br />
+          <TextField
+            id="name"
+            label="שם העסק"
+            className={classes.textField}
+            value={values.name}
+            onChange={handleChange('name')}
+            margin="normal"
+          />
+          <TextField
+            id="address"
+            label="כתובת"
+            className={classes.textField}
+            value={values.address}
+            onChange={handleChange('address')}
+            margin="normal"
+          />
+          <TextField
+            id="phone"
+            label="טלפון"
+            className={classes.textField}
+            value={values.phone}
+            onChange={handleChange('phone')}
+            margin="normal"
+          />
+
+          <br />
+          {/* <TextField
+            id="multiline-flexible"
+            label="פרטי העסק"
+            multiline
+            rows="3"
+            value={values.description}
+            onChange={handleChange('description')}
+            className={classes.textField}
+            margin="normal"
+          /> */}
+          {/* <br /> */}
+          {/* <Typography type="subheading" component="h4" className={classes.subheading}>Owner: {values.owner} </Typography><br /> */}
+          {
+            values.error && (<Typography component="p" color="error">
+              <Icon color="error" className={classes.error}>error</Icon>
+              {values.error}
+            </Typography>)
+          }
+        </CardContent>
+        <CardActions>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={clickSubmit}
+            className={classes.submit}
+          >עדכן</Button>
+        </CardActions>
+      </Card>
+      {/* </Grid> */}
+      {/* <Grid item xs={6} sm={6}>
+          <MyProducts shopId={match.params.shopId} />
+        </Grid> */}
+      {/* </Grid> */}
+    </div>
+  )
 }

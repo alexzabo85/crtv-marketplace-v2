@@ -18,18 +18,18 @@ const ProductSchema = new mongoose.Schema({
   },
   quantity: {
     type: Number,
-    required: "Quantity is required"
+    // required: "Quantity is required"
   },
   price: {
     type: Number,
-    required: "Price is required"
+    // required: "Price is required"
   },
   updated: Date,
   created: {
     type: Date,
     default: Date.now
   },
-  shop: {type: mongoose.Schema.ObjectId, ref: 'Shop'}
+  shop: { type: mongoose.Schema.ObjectId, ref: 'Shop' }
 })
 
 export default mongoose.model('Product', ProductSchema)

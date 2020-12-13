@@ -91,9 +91,9 @@ export default function Suggestions(props) {
   const classes = useStyles()
   return (<div>
     <Paper className={classes.root} elevation={4}>
-      <Typography type="title" className={classes.title}>
+      {/* <Typography type="title" className={classes.title}>
         {props.title}
-      </Typography>
+      </Typography> */}
       {props.products.map((item, i) => {
         return (
           <span key={i}>
@@ -101,6 +101,8 @@ export default function Suggestions(props) {
               <CardMedia
                 className={classes.cover}
                 image={'/api/product/image/' + item._id}
+                // image={`data:${props.images[0].mimetype};base64,${Buffer.from(props.images[0].file.data).toString('base64')}`}
+                // image={`data:image/jpeg;base64,${Buffer.from(item.image).toString('base64')}`}
                 title={item.name}
               />
               <div className={classes.details}>
