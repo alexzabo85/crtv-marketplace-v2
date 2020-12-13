@@ -43,6 +43,11 @@ const useStyles = makeStyles(theme => ({
   details: {
     padding: '10px'
   },
+  action: {
+    right: 'revert',
+    left: '16px',
+
+  },
 }))
 
 export default function MyProducts(props) {
@@ -76,11 +81,11 @@ export default function MyProducts(props) {
   return (
     <Card className={classes.products}>
       <Typography type="title" className={classes.title}>
-        Products
-          <span className={classes.addButton}>
+        {/* Products */}
+        <span className={classes.addButton}>
           <Link to={"/seller/" + props.shopId + "/products/new"}>
             <Button color="primary" variant="contained">
-              <Icon className={classes.leftIcon}>add_box</Icon>  New Product
+              <Icon className={classes.leftIcon}>add_box</Icon> הוסף
               </Button>
           </Link>
         </span>
@@ -102,7 +107,8 @@ export default function MyProducts(props) {
                   Quantity: {product.quantity} | Price: ${product.price}
                 </Typography>
               </div>
-              <ListItemSecondaryAction>
+              <ListItemSecondaryAction classes={{ root: classes.action }}>
+                {/* <ListItemSecondaryAction > */}
                 <Link to={"/seller/" + props.shopId + "/" + product._id + "/edit"}>
                   <IconButton aria-label="Edit" color="primary">
                     <Edit />

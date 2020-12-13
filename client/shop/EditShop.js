@@ -140,56 +140,56 @@ export default function EditShop({ match }) {
   }
   return (
     <div className={classes.root}>
-      {/* <Grid container spacing={8} justify='center'> */}
-      {/* <Grid item xs={6} > */}
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography type="headline" component="h2" className={classes.title}>
-            עריכת פרטי חנות
+      <Grid container spacing={8} justify='center'>
+        <Grid item xs={6} >
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography type="headline" component="h2" className={classes.title}>
+                עריכת פרטי חנות
               </Typography>
-          <br />
-          <img
-            align="center"
-            src={logoUrl}
-            // width="150px"
-            className={classes.image}
-          />
-          <br />
-          {/* <Avatar src={logoUrl} className={classes.bigAvatar} /><br /> */}
-          <input accept="image/*" onChange={handleChange('image')} className={classes.input} id="icon-button-file" type="file" />
-          <label htmlFor="icon-button-file">
-            <Button variant="contained" color="default" component="span">
-              הוספת לוגו
+              <br />
+              <img
+                align="center"
+                src={logoUrl}
+                // width="150px"
+                className={classes.image}
+              />
+              <br />
+              {/* <Avatar src={logoUrl} className={classes.bigAvatar} /><br /> */}
+              <input accept="image/*" onChange={handleChange('image')} className={classes.input} id="icon-button-file" type="file" />
+              <label htmlFor="icon-button-file">
+                <Button variant="contained" color="default" component="span">
+                  הוספת לוגו
                   <FileUpload />
-            </Button>
-          </label> <span className={classes.filename}>{values.image ? values.image.name : ''}</span><br />
-          <TextField
-            id="name"
-            label="שם העסק"
-            className={classes.textField}
-            value={values.name}
-            onChange={handleChange('name')}
-            margin="normal"
-          />
-          <TextField
-            id="address"
-            label="כתובת"
-            className={classes.textField}
-            value={values.address}
-            onChange={handleChange('address')}
-            margin="normal"
-          />
-          <TextField
-            id="phone"
-            label="טלפון"
-            className={classes.textField}
-            value={values.phone}
-            onChange={handleChange('phone')}
-            margin="normal"
-          />
+                </Button>
+              </label> <span className={classes.filename}>{values.image ? values.image.name : ''}</span><br />
+              <TextField
+                id="name"
+                label="שם העסק"
+                className={classes.textField}
+                value={values.name}
+                onChange={handleChange('name')}
+                margin="normal"
+              />
+              <TextField
+                id="address"
+                label="כתובת"
+                className={classes.textField}
+                value={values.address}
+                onChange={handleChange('address')}
+                margin="normal"
+              />
+              <TextField
+                id="phone"
+                label="טלפון"
+                className={classes.textField}
+                value={values.phone}
+                onChange={handleChange('phone')}
+                margin="normal"
+              />
 
-          <br />
-          {/* <TextField
+              <br />
+              {/* <TextField
             id="multiline-flexible"
             label="פרטי העסק"
             multiline
@@ -199,29 +199,29 @@ export default function EditShop({ match }) {
             className={classes.textField}
             margin="normal"
           /> */}
-          {/* <br /> */}
-          {/* <Typography type="subheading" component="h4" className={classes.subheading}>Owner: {values.owner} </Typography><br /> */}
-          {
-            values.error && (<Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
-              {values.error}
-            </Typography>)
-          }
-        </CardContent>
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={clickSubmit}
-            className={classes.submit}
-          >עדכן</Button>
-        </CardActions>
-      </Card>
-      {/* </Grid> */}
-      {/* <Grid item xs={6} sm={6}>
+              {/* <br /> */}
+              {/* <Typography type="subheading" component="h4" className={classes.subheading}>Owner: {values.owner} </Typography><br /> */}
+              {
+                values.error && (<Typography component="p" color="error">
+                  <Icon color="error" className={classes.error}>error</Icon>
+                  {values.error}
+                </Typography>)
+              }
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={clickSubmit}
+                className={classes.submit}
+              >עדכן</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={6} sm={6}>
           <MyProducts shopId={match.params.shopId} />
-        </Grid> */}
-      {/* </Grid> */}
+        </Grid>
+      </Grid>
     </div>
   )
 }
