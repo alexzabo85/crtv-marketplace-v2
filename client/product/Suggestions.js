@@ -107,14 +107,14 @@ export default function Suggestions(props) {
               />
               <div className={classes.details}>
                 <CardContent className={classes.content}>
-                  <Link to={'/product/' + item._id}>
-                    <Typography
-                      variant="h3"
-                      component="h3"
-                      className={classes.productTitle}
-                      color="primary"
-                    >{item.name}</Typography>
-                  </Link>
+                  {/* <Link to={'/product/' + item._id}> */}
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    className={classes.productTitle}
+                    color="primary"
+                  >{item.name}</Typography>
+                  {/* </Link> */}
                   {/* <Link to={'/shops/' + item.shop._id}>
                     <Typography type="subheading" className={classes.subheading}>
                       <Icon className={classes.icon}>shopping_basket</Icon> {item.shop.name}

@@ -24,16 +24,17 @@ export default function Cart() {
 
   return (<div className={classes.root}>
     <Grid container spacing={8}>
-      <Grid item xs={12} >
-        <CartItems checkout={checkout}
-          setCheckout={showCheckout} />
-      </Grid>
-      {checkout &&
+      {
         <Grid item xs={12} >
-          <StripeProvider apiKey={config.stripe_test_api_key}>
-            <Checkout />
-          </StripeProvider>
+          <CartItems checkout={checkout}
+            setCheckout={showCheckout} />
         </Grid>}
+      {
+        !checkout &&
+        <Grid item xs={12} >
+          {/* <StripeProvider apiKey={config.stripe_test_api_key}> <Checkout /></StripeProvider> */}
+        </Grid>
+      }
     </Grid>
   </div>)
 }
