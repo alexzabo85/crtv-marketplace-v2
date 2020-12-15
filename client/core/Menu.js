@@ -13,7 +13,7 @@ import cart from './../cart/cart-helper'
 import Grid from '@material-ui/core/Grid'
 
 const menuStyle = {
-  fontSize: '1.5rem',
+  fontSize: '1.8rem',
   margin: '10px'
 }
 const isActive = (history, path) => {
