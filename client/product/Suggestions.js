@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -14,6 +14,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardMedia from '@material-ui/core/CardMedia'
 import AddToCart from './../cart/AddToCart'
 // import Card, { CardContent, CardMedia, CardActions } from 'material-ui/Card'
+import cart from '../cart/cart-helper.js'
 
 const useStyles = makeStyles(theme => ({
   root: theme.mixins.gutters({
@@ -83,8 +84,9 @@ const useStyles = makeStyles(theme => ({
     height: 50,
     padding: '10px 12px',
     borderRadius: '0.25em',
-    backgroundColor: '#5f7c8b'
-  },
+    backgroundColor: '#5f7c8b',
+    // zIndex: 2500
+  }
 }))
 
 export default function Suggestions(props) {
@@ -137,8 +139,10 @@ export default function Suggestions(props) {
 
               <CardActions className={classes.actions} >
                 <div className={classes.controls}>
-
-                  <AddToCart cartStyle={classes.addCart} item={item} />
+                  <AddToCart
+                    cartStyle={classes.addCart}
+                    item={item}
+                  />
                 </div>
               </CardActions>
 
@@ -147,6 +151,7 @@ export default function Suggestions(props) {
               {/* <AddToCart item={item} /> */}
               {/* </div> */}
             </Card>
+            <Divider />
             <Divider />
           </span>
         )

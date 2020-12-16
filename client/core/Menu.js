@@ -56,10 +56,10 @@ const Menu = withRouter(({ history }) => (
         </Link> */}
         <Link to="/cart">
           <Button style={{ ...isActive(history, "/cart"), ...menuStyle }}>
-            עגלת קניות
-            <Badge invisible={false} color="secondary" badgeContent={cart.itemTotal()} style={{ 'marginRight': '10px' }}>
-              <CartIcon />
-            </Badge>
+            {/* עגלת קניות */}
+            {/* <Badge invisible={false} color="secondary" badgeContent={cart.itemTotal()} style={{ 'marginRight': '10px' }}> */}
+            <CartIcon />
+            {/* </Badge> */}
           </Button>
         </Link>
       </div>

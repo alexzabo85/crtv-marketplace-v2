@@ -11,6 +11,8 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import cart from './cart-helper.js'
 import { Link } from 'react-router-dom'
+import { sendOrder } from '../order/api-order'
+
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -31,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    marginTop: 12 ,
+    marginTop: 12,
     width: 50,
     fontSize: 'inherit',
   },
@@ -124,8 +126,15 @@ export default function CartItems(props) {
     setCartItems(updatedCartItems)
   }
 
-  const openCheckout = () => {
-    props.setCheckout(true)
+  const openCheckout = async () => {
+    // alert('props.checkout' + props.checkout)
+    const jwt = auth.isAuthenticated()
+    const status = await sendOrder({ t: jwt.token }, cartItems/*, orderConf*/)
+    // status === true ? 'Order Placed Successfully' : 'Order Placed Canceled'
+    // alert('order status: ' + JSON.stringify(status))
+    alert('order status: ', status, 'props.checkout:' + props.checkout)
+    // console.log(status.message)
+    props.setCheckout(!props.checkout)
   }
 
   return (<Card className={classes.card}>

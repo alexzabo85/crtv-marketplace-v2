@@ -12,6 +12,9 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import productListHelper from '../product/product-helper.js'
 import { Card, CardContent, CardMedia } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import CartIcon from '@material-ui/icons/ShoppingCart'
 
 
 const useStyles = makeStyles(theme => ({
@@ -87,23 +90,18 @@ export default function Home() {
           return true;
         })
         .then(() => {
-          // alert(shopId)
-          // console.count('home');
           return productApi.listByShop({ shopId: shopId }, signal);
         })
         .then((receivedProductsList) => {
-          // alert(shopId)
-          // console.count('home');
           productList = [...receivedProductsList]
           setSuggestions(productList)
-
-          // console.dir(receivedProductsList[0])
-
         })
         .catch((err) => { console.log(err) })
     } else {
       setSuggestions(productList)
     }
+
+    // console.log(productList)
 
     null && shopApi.list(signal).then((data) => {
       if (data.error) {
@@ -124,7 +122,7 @@ export default function Home() {
     return function cleanup() {
       abortController.abort()
     }
-  }, [])
+  }, [productList])
 
   return (
     <div className={classes.root}>
@@ -170,6 +168,13 @@ export default function Home() {
           <Grid item xs={12} sm={11}>
             <Suggestions products={suggestions} title={suggestionTitle} />
           </Grid>
+          <Grid item xs={12} sm={11}>
+            <Link to='/cart' className={classes.continueBtn}>
+              <Button color="primary" variant="contained">לעגלה <CartIcon /></Button>
+
+
+            </Link>
+          </Grid>
         </Grid>
       ) : (
           <Paper className={classes.bizLogo} elevation={4}>
@@ -177,7 +182,7 @@ export default function Home() {
           </Paper>
         )
       }
-    </div>
+    </div >
   )
 }
 
