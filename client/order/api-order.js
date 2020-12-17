@@ -1,31 +1,14 @@
-const sendOrder = async (
-  credentials,
-  cart
-) => {
-  const orderBody = cart.map(v => ({
-    itemName: v.product.name,
-    itemId: v.product._id,
-  }))
+const sendOrder = async (credentials, order) => {
   try {
-    let response = await fetch('/api/orders/', {
+    let response = await fetch('/api/orders', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + credentials.t
       },
-      // body: JSON.stringify(params)
-      body: JSON.stringify(
-        {
-          header: {
-            documentId: '30012'
-          },
-          body: orderBody
-        }
-      )
+      body: JSON.stringify({ order: order })
     })
-    // const resJson = await response.json()
-    // console.log('resJson: ', resJson)
     return response.json()
   } catch (err) {
     console.log(err)

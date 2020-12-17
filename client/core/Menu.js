@@ -66,10 +66,10 @@ const Menu = withRouter(({ history }) => (
       <div style={{ 'position': 'absolute', 'left': '10px' }}><span style={{ 'float': 'right' }}>
         {
           !auth.isAuthenticated() && (<span>
-            <Link to="/signup">
+            {/* <Link to="/signup">
               <Button style={{ ...isActive(history, "/signup"), ...menuStyle }}>רישום
             </Button>
-            </Link>
+            </Link> */}
             <Link to="/signin">
               <Button style={{ ...isActive(history, "/signin"), ...menuStyle }}>כניסה
             </Button>

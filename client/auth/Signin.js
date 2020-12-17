@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -8,8 +8,9 @@ import Typography from '@material-ui/core/Typography'
 import Icon from '@material-ui/core/Icon'
 import { makeStyles } from '@material-ui/core/styles'
 import auth from './../auth/auth-helper'
-import {Redirect} from 'react-router-dom'
-import {signin} from './api-auth.js'
+import { Redirect } from 'react-router-dom'
+import { signin } from './api-auth.js'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -54,10 +55,10 @@ export default function Signin(props) {
 
     signin(user).then((data) => {
       if (data.error) {
-        setValues({ ...values, error: data.error})
+        setValues({ ...values, error: data.error })
       } else {
         auth.authenticate(data, () => {
-          setValues({ ...values, error: '',redirectToReferrer: true})
+          setValues({ ...values, error: '', redirectToReferrer: true })
         })
       }
     })
@@ -67,36 +68,44 @@ export default function Signin(props) {
     setValues({ ...values, [name]: event.target.value })
   }
 
-  const {from} = props.location.state || {
+  const { from } = props.location.state || {
     from: {
       pathname: '/'
     }
   }
-  const {redirectToReferrer} = values
+  const { redirectToReferrer } = values
   if (redirectToReferrer) {
-      return (<Redirect to={from}/>)
+    return (<Redirect to={from} />)
   }
 
   return (
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography variant="h5" className={classes.title}>
-            Sign In
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography variant="h5" className={classes.title}>
+          כניסה
           </Typography>
-          <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal"/><br/>
-          <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/>
-          <br/> {
-            values.error && (<Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
-              {values.error}
-            </Typography>)
-          }
-        </CardContent>
-        <CardActions>
+        <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
+        <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
+        <br /> {
+          values.error && (<Typography component="p" color="error">
+            <Icon color="error" className={classes.error}>error</Icon>
+            {values.error}
+          </Typography>)
+        }
+      </CardContent>
+      <CardActions>
         <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
-        </CardActions>
-      </Card>
-    )
+      </CardActions>
+      <Typography >
+        <Link to="/signup">
+          <Button >
+            הירשם כאן
+            </Button>
+        </Link>
+
+      </Typography>
+    </Card>
+  )
 }
 
 
