@@ -129,12 +129,32 @@ export default function CartItems(props) {
   const openCheckout = async () => {
     // alert('props.checkout' + props.checkout)
     const jwt = auth.isAuthenticated()
-    const status = await sendOrder({ t: jwt.token }, cartItems/*, orderConf*/)
+    const order = await sendOrder({ t: jwt.token }, cart.getCart()/*, orderConf*/)
     // status === true ? 'Order Placed Successfully' : 'Order Placed Canceled'
-    // alert('order status: ' + JSON.stringify(status))
-    alert('order status: ', status, 'props.checkout:' + props.checkout)
-    // console.log(status.message)
-    props.setCheckout(!props.checkout)
+
+    if (order.status === true) {
+      alert(`ההזמנה נשלחה בהצלחה!`);
+      await new Promise((resFunc, rejFunc) => { cart.emptyCart(resFunc) }) // cart.emptyCart()
+      await new Promise((resFunc, rejFunc) => {
+        setCartItems(cart.getCart());
+        resFunc();
+      }) // cart.emptyCart()
+      // alert(`2ההזמנה בוצע בהצלחה:`);
+      return true;
+    }
+    // else {
+    alert(`ההזמנה נכשלה!`);
+    return false
+    // }
+    // alert(`ההזמנה בוצע בהצלחה:
+    // db: ${order.db}
+    // serial: ${order.serial}
+    // status: ${order.status}
+    //   typeof: ${typeof order.status}
+    // `)
+    // alert('order status: ' + status)
+    // console.log('[CI1]', status)
+    // props.setCheckout(!props.checkout)
   }
 
   return (<Card className={classes.card}>
@@ -186,7 +206,7 @@ export default function CartItems(props) {
       <div className={classes.checkout}>
         {/* <span className={classes.total}>סכום כולל: ₪{getTotal()}</span> */}
         {!props.checkout && (auth.isAuthenticated() ?
-          <Button color="secondary" variant="contained" onClick={openCheckout}>לקופה</Button>
+          <Button color="secondary" variant="contained" onClick={openCheckout}>בצע הזמנה</Button>
           :
           <Link to="/signin">
             <Button color="primary" variant="contained">התחבר</Button>
