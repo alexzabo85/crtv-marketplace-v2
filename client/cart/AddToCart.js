@@ -39,8 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function AddToCart(props) {
   const classes = useStyles()
-  const redirect = false;
+  let redirect = false;
   const [index, setIndex] = useState(cart.findById(props.item._id))
+  // const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     setIndex(cart.findById(props.item._id))
@@ -59,10 +60,10 @@ export default function AddToCart(props) {
         () => {
           const index = cart.findById(props.item._id)
           setIndex(index)
-          // setRedirect({ redirect: true })
         }
       )
     }
+    // setRedirect(true)
     redirect = true;
   }
 
@@ -70,6 +71,7 @@ export default function AddToCart(props) {
     // alert('[03]index:' + index)
     cart.removeItem(index)
     setIndex(-1)
+    // setRedirect(true)
     redirect = true;
 
   }
@@ -77,6 +79,7 @@ export default function AddToCart(props) {
   if (redirect) {
     return (<Redirect to={'/'} />)
   }
+  // alert('test of calling if ')
   return (
     <span>{
       (index == -1) ? (

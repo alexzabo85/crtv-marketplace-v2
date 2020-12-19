@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import cart from './cart-helper.js'
 import { Link } from 'react-router-dom'
 import { sendOrder } from '../order/api-order'
-
+import ConfirmOrder from './ConfirmOrder'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     marginTop: 12,
     width: 50,
-    fontSize: 'inherit',
+    // fontSize: '3rem',
   },
   productTitle: {
     fontSize: '2.5rem',
@@ -100,6 +100,7 @@ const useStyles = makeStyles(theme => ({
 export default function CartItems(props) {
   const classes = useStyles()
   const [cartItems, setCartItems] = useState(cart.getCart())
+  const [showConfirm, setShowConfirm] = useState(false)
 
   const handleChange = index => event => {
     let updatedCartItems = cartItems
@@ -126,100 +127,94 @@ export default function CartItems(props) {
     setCartItems(updatedCartItems)
   }
 
-  const openCheckout = async () => {
-    // alert('props.checkout' + props.checkout)
+  const callSendOrder2 = async () => { }
+  const callSendOrder = async () => {
     const jwt = auth.isAuthenticated()
     const order = await sendOrder({ t: jwt.token }, cart.getCart()/*, orderConf*/)
-    // status === true ? 'Order Placed Successfully' : 'Order Placed Canceled'
-
+    console.log('[CI99]', cart.getCart())
     if (order.status === true) {
       alert(`ההזמנה נשלחה בהצלחה!`);
       await new Promise((resFunc, rejFunc) => { cart.emptyCart(resFunc) }) // cart.emptyCart()
       await new Promise((resFunc, rejFunc) => {
         setCartItems(cart.getCart());
         resFunc();
-      }) // cart.emptyCart()
-      // alert(`2ההזמנה בוצע בהצלחה:`);
+      })
       return true;
     }
-    // else {
+
     alert(`ההזמנה נכשלה!`);
     return false
-    // }
-    // alert(`ההזמנה בוצע בהצלחה:
-    // db: ${order.db}
-    // serial: ${order.serial}
-    // status: ${order.status}
-    //   typeof: ${typeof order.status}
-    // `)
-    // alert('order status: ' + status)
-    // console.log('[CI1]', status)
-    // props.setCheckout(!props.checkout)
+
   }
 
-  return (<Card className={classes.card}>
-    {/* <Typography type="title" className={classes.title}>
-        Shopping Cart
-      </Typography> */}
-    {cartItems.length > 0 ? (<span>
-      {cartItems.map((item, i) => {
-        return <span key={i}><Card className={classes.cart}>
-          <CardMedia
-            className={classes.cover}
-            image={'/api/product/image/' + item.product._id}
-            title={item.product.name}
-          />
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              {/* <Link to={'/product/' + item.product._id}> */}
-              <Typography type="title" component="h3" className={classes.productTitle} color="primary">{item.product.name}</Typography>
-              {/* </Link> */}
-              {/* <div>
-                <Typography type="subheading" component="h3" className={classes.price} color="primary">$ {item.product.price}</Typography>
-                <span className={classes.itemTotal}>${item.product.price * item.quantity}</span>
-                <span className={classes.itemShop}>Shop: {item.product.shop.name}</span>
-              </div> */}
-            </CardContent>
-            <div
-              className={classes.subheading}
-            >כמות:<TextField
-                className={classes.textField}
-                value={item.quantity}
-                onChange={handleChange(i)}
-                type="number"
-                inputProps={{
-                  min: 1
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                margin="normal"
-              />
-              <Button className={classes.removeButton} color="primary" onClick={removeItem(i)}>[הסר]</Button>
-            </div>
+  return (
+    <Card className={classes.card}>
+      {cartItems.length > 0 ? (
+        <span>
+          {cartItems.map((item, i) => {
+            return (
+              <span key={i}>
+                <Card className={classes.cart}>
+                  <CardMedia
+                    className={classes.cover}
+                    image={'/api/product/image/' + item.product._id}
+                    title={item.product.name}
+                  />
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography type="title" component="h3" className={classes.productTitle} color="primary">{item.product.name}</Typography>
+                    </CardContent>
+                    <div
+                      className={classes.subheading}
+                    >כמות:<TextField
+                        className={classes.textField}
+                        value={item.quantity}
+                        onChange={handleChange(i)}
+                        type="number"
+                        inputProps={{
+                          min: 1
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        margin="normal"
+                      />
+                      <Button className={classes.removeButton} color="primary" onClick={removeItem(i)}>[הסר]</Button>
+                    </div>
+                  </div>
+                </Card>
+                <Divider />
+              </span>
+            )
+          })
+          }
+          <div className={classes.checkout}>
+            {/* <span className={classes.total}>סכום כולל: ₪{getTotal()}</span> */}
+            {!props.checkout && (auth.isAuthenticated() ?
+              showConfirm ?
+                <ConfirmOrder
+                  handleRequestClose={() => setShowConfirm(false)}
+                  confirmFunction={() => {
+                    setShowConfirm(false)
+                    callSendOrder()
+                  }}
+                />
+                :
+                <Button color="secondary" variant="contained" onClick={() => setShowConfirm(true)}>בצע הזמנה</Button>
+              :
+              <Link to="/signin">
+                <Button color="primary" variant="contained">התחבר</Button>
+              </Link>
+            )}
+            <Link to='/' className={classes.continueBtn}>
+              <Button variant="contained">חזרה לחנות</Button>
+            </Link>
           </div>
-        </Card>
-          <Divider />
         </span>
-      })
+      ) : <Typography variant="subtitle1" component="h3" color="primary">העגלה ריקה.</Typography>
       }
-      <div className={classes.checkout}>
-        {/* <span className={classes.total}>סכום כולל: ₪{getTotal()}</span> */}
-        {!props.checkout && (auth.isAuthenticated() ?
-          <Button color="secondary" variant="contained" onClick={openCheckout}>בצע הזמנה</Button>
-          :
-          <Link to="/signin">
-            <Button color="primary" variant="contained">התחבר</Button>
-          </Link>
-        )}
-        <Link to='/' className={classes.continueBtn}>
-          <Button variant="contained">חזרה לחנות</Button>
-        </Link>
-      </div>
-    </span>) :
-      <Typography variant="subtitle1" component="h3" color="primary">העגלה ריקה.</Typography>
-    }
-  </Card>)
+    </Card>
+  )
 }
 
 CartItems.propTypes = {

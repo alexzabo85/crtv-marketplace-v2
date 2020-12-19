@@ -11,10 +11,12 @@ import * as productApi from '../product/api-product'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import productListHelper from '../product/product-helper.js'
-import { Card, CardContent, CardMedia } from '@material-ui/core'
+import { Box, Card, CardContent, CardMedia } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import CartIcon from '@material-ui/icons/ShoppingCart'
+import shop from '../shop/shop-helper.js'
+import Fab from '@material-ui/core/Fab';
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,9 +44,15 @@ const useStyles = makeStyles(theme => ({
   bizCover: {
     width: 151,
   },
+  fab: {
+    margin: 0,
+    top: 'auto',
+    left: 'auto',
+    bottom: 20,
+    right: 20,
+    position: 'fixed'
+  }
 }))
-// shop.list()
-// auth.isAuthenticated().user._id
 
 let count = 0;
 let productList = [];
@@ -56,39 +64,34 @@ export default function Home() {
   const [suggestionTitle, setSuggestionTitle] = useState("רשימת מוצרים")
   const [categories, setCategories] = useState([])
   const [suggestions, setSuggestions] = useState([])
-  // const [shopId, setShopId] = useState('')
-
-  // let shop = {}
-  // let shopId = "";
 
   useEffect(() => {
     /**
      * new functin is generated and called on each router entery.
      * cntLocal will never increase its value
      */
-    // console.log("call: Home useEffect")
+
     const abortController = new AbortController()
     const signal = abortController.signal
     let shopIdLocal = ''
     let cntLocal = 0
 
-    // alert(count++)
-    // alert(`productList.length=${productList.length}`);
     console.log('home', 'useEffect: ' + cntLocal++);
 
     if (!productList.length) {
       console.log('calling db for list');
-      shopApi.list(signal)
-        .then((data) => {
-          if (!data || data.error) {
-            throw `Error call shopApi.list: ${data}`
-          }
-          shopId = data[0]._id;
-          shopDetails = data[0]
-          // shopIdLocal = data[0]._id;
-          // setShopId(shopIdLocal)
-          return true;
-        })
+      shopApi.list(signal).then((data) => {
+        if (!data || data.error) {
+          throw `Error call shopApi.list: ${data}`
+        }
+        shopId = data[0]._id;
+        shopDetails = data[0]
+        shopDetails._id = shopId
+        shop.update({ ...shopDetails })
+        // await new Promise((resFunc, rejFunc) => { shop.update({ ...shopDetails }, resFunc) }) // cart.emptyCart()
+
+        return true;
+      })
         .then(() => {
           return productApi.listByShop({ shopId: shopId }, signal);
         })
@@ -103,22 +106,6 @@ export default function Home() {
 
     // console.log(productList)
 
-    null && shopApi.list(signal).then((data) => {
-      if (data.error) {
-        console.log(data.error)
-      } else {
-        const shopIdLocal = data[0]._id;
-        setShopId('' + shopIdLocal)
-        productApi.listByShop({ shopId: shopIdLocal }, signal).then((productsList) => {
-          if (productsList.error) {
-            console.log(productsList.error)
-          } else {
-            setSuggestions(productsList)
-          }
-        })
-      }
-    }).catch((err) => { alert(err) })
-
     return function cleanup() {
       abortController.abort()
     }
@@ -126,6 +113,9 @@ export default function Home() {
 
   return (
     <div className={classes.root}>
+      <Fab className={classes.fab} href='/cart'>
+        <CartIcon />
+      </Fab>
       { suggestions && suggestions.length ? (
         <Grid container justify="center" spacing={2}>
           {/* <Grid item xs={8} sm={8}>
@@ -140,7 +130,6 @@ export default function Home() {
                 width="150px"
               />
             </Card>}
-
             <Card className={classes.bizCardRoot}>
               <CardMedia
                 className={classes.bizCover}
@@ -162,25 +151,17 @@ export default function Home() {
                   </Typography>
                 </CardContent>
               </div>
-
             </Card>
           </Grid>
           <Grid item xs={12} sm={11}>
             <Suggestions products={suggestions} title={suggestionTitle} />
           </Grid>
-          <Grid item xs={12} sm={11}>
-            <Link to='/cart' className={classes.continueBtn}>
-              <Button color="primary" variant="contained">לעגלה <CartIcon /></Button>
 
 
-            </Link>
-          </Grid>
         </Grid>
-      ) : (
-          <Paper className={classes.bizLogo} elevation={4}>
-            <Typography variant="subtitle1" component="h3" color="primary"> טוען נתונים...</Typography>
-          </Paper>
-        )
+      ) : (<Paper className={classes.bizLogo} elevation={4}>
+        <Typography variant="subtitle1" component="h3" color="primary"> טוען נתונים...</Typography>
+      </Paper>)
       }
     </div >
   )

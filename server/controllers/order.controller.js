@@ -20,9 +20,9 @@ const sendOrder = async (req, res) => {
   let order;
   let result;
   try {
-    req.body.order.user = req.profile
+    // req.body.order.user = req.profile
     order = new Order({
-      products: [],
+      products: [req.body.order],
       customer_name: 'req.profile' + Date().toString(),
       serial: 0,
       status: '',
@@ -50,6 +50,7 @@ const sendOrder = async (req, res) => {
       }]
     };
     data.header.documentId = hexId
+    data.body = [req.body.order]
     null && JSON.stringify({
       "header": {
         "documentId": req.body.header.documentId,
