@@ -13,6 +13,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import CardMedia from '@material-ui/core/CardMedia'
 import AddToCart from './../cart/AddToCart'
+import UpdateCart from './../cart/UpdateCart'
 // import Card, { CardContent, CardMedia, CardActions } from 'material-ui/Card'
 import cart from '../cart/cart-helper.js'
 
@@ -31,6 +32,14 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'middle'
   },
   card: {
+    // width: '100%',
+    // display: 'inline-flex',
+    width: 'auto',
+    margin: '24px 0px',
+    padding: '16px 40px 60px 40px',
+    backgroundColor: '#80808017'
+  },
+  cart: {
     width: '100%',
     display: 'inline-flex'
   },
@@ -86,79 +95,72 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '0.25em',
     backgroundColor: '#5f7c8b',
     // zIndex: 2500
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginTop: 12,
+    width: 50,
+    fontSize: 'inherit',
+  },
+  removeButton: {
+    fontSize: '0.8em',
+    marginBottom: '8px'
   }
 }))
 
 export default function Suggestions(props) {
   const classes = useStyles()
-  return (<div>
-    <Paper className={classes.root} elevation={4}>
-      {/* <Typography type="title" className={classes.title}>
-        {props.title}
-      </Typography> */}
-      {props.products.map((item, i) => {
-        return (
-          <span key={i}>
-            <Card className={classes.card}>
-              <CardMedia
-                className={classes.cover}
-                image={'/api/product/image/' + item._id}
-                // image={`data:${props.images[0].mimetype};base64,${Buffer.from(props.images[0].file.data).toString('base64')}`}
-                // image={`data:image/jpeg;base64,${Buffer.from(item.image).toString('base64')}`}
-                title={item.name}
-              />
-              <div className={classes.details}>
-                <CardContent className={classes.content}>
-                  {/* <Link to={'/product/' + item._id}> */}
-                  <Typography
-                    variant="h3"
-                    component="h3"
-                    className={classes.productTitle}
-                    color="primary"
-                  >{item.name}</Typography>
-                  {/* </Link> */}
-                  {/* <Link to={'/shops/' + item.shop._id}>
-                    <Typography type="subheading" className={classes.subheading}>
-                      <Icon className={classes.icon}>shopping_basket</Icon> {item.shop.name}
+  const handleChange = index => event => { }
+  const removeItem = index => event => { }
+  return (
+    // <Paper className={classes.root} elevation={4}>
+    <Card className={classes.card}>
+      <span>
+        {props.products.map((item, i) => {
+          const idx = cart.findById(item._id)
+          const el = { quantity: idx >= 0 ? cart.getCart()[idx].quantity : 0 };
+          console.log('[SG55]' + el.quantity)
+          return (
+            <span key={i} >
+              <Card className={classes.cart}>
+                <CardMedia
+                  className={classes.cover}
+                  image={'/api/product/image/' + item._id}
+                  title={item.name}
+                />
+                <div className={classes.details}>
+                  <CardContent className={classes.content}>
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      className={classes.productTitle}
+                      color="primary"
+                    >{item.name}
                     </Typography>
-                  </Link> */}
-                  {/* <Typography component="p" className={classes.date}>
-                    Added on {(new Date(item.created)).toDateString()}
-                  </Typography> */}
-                  {/* <div className={classes.controls}> */}
-                  {/* <Typography type="subheading" component="h3" className={classes.price} color="primary">$ {item.price}</Typography> */}
-                  {/* <span className={classes.actions}>
-                    <Link to={'/product/' + item._id}>
-                      <IconButton color="secondary" dense="dense">
-                        <ViewIcon className={classes.iconButton} />
-                      </IconButton>
-                    </Link>
-                  </span> */}
-                </CardContent>
-              </div>
+                  </CardContent>
 
-              <CardActions className={classes.actions} >
-                <div className={classes.controls}>
-                  <AddToCart
-                    cartStyle={classes.addCart}
-                    item={item}
-                  />
                 </div>
-              </CardActions>
-
-
-              {/* <AddToCart item={item} /> */}
-              {/* <AddToCart item={item} /> */}
-              {/* </div> */}
-            </Card>
-            <Divider />
-            <Divider />
-          </span>
-        )
-      })
-      }
-    </Paper>
-  </div>)
+                <CardActions className={classes.actions} >
+                  <div className={classes.controls}>
+                    <UpdateCart
+                      cartStyle={classes.addCart}
+                      item={item}
+                    />
+                    {/* <AddToCart
+                      cartStyle={classes.addCart}
+                      item={item}
+                    /> */}
+                  </div>
+                </CardActions>
+              </Card>
+              <Divider />
+            </span>
+          )
+        })}
+      </span>
+    </Card >
+  )
 }
 
 Suggestions.propTypes = {
