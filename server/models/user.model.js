@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
   clientNumber: {
     type: String,
     trim: true,
-    // unique: 'Client Number already exists',
+    unique: 'Client Number already exists',
     // match: [/0-9/, 'Please fill a valid Client Number'],
     // required: 'Client Number  is required'
   },

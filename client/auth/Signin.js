@@ -84,8 +84,8 @@ export default function Signin(props) {
         <Typography variant="h5" className={classes.title}>
           כניסה
           </Typography>
-        <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
-        <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
+        <TextField id="email" type="email" label="דואר אלקטרוני" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
+        <TextField id="password" type="password" label="סיסמה" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
         <br /> {
           values.error && (<Typography component="p" color="error">
             <Icon color="error" className={classes.error}>error</Icon>
