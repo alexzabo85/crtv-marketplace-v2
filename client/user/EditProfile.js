@@ -113,10 +113,10 @@ export default function EditProfile({ match }) {
           </Typography>
         <TextField id="name" label="שם לקוח" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal" /><br />
         <TextField id="email" type="email" label="דואר אלקטרוני" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
-        <TextField id="clientNumber" label="מספר לקוח" className={classes.textField} value={values.clientNumber} onChange={handleChange('clientNumber')} margin="normal" /><br />
+        <TextField id="clientNumber" label="מספר לקוח" disabled className={classes.textField} value={values.clientNumber} onChange={handleChange('clientNumber')} margin="normal" /><br />
         <TextField id="password" type="password" label="סיסמה" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
         <Typography variant="subtitle1" className={classes.subheading}>
-          Seller Account
+          הגדרות בעל עסק
           </Typography>
         <FormControlLabel
           control={
@@ -127,7 +127,7 @@ export default function EditProfile({ match }) {
               checked={values.seller}
               onChange={handleCheck}
             />}
-          label={values.seller ? 'Active' : 'Inactive'}
+          label={values.seller ? 'משתמש רגיל' : 'בעל עסק'}
         />
         <br /> {
           values.error && (<Typography component="p" color="error">

@@ -94,7 +94,7 @@ export default function Signin(props) {
         }
       </CardContent>
       <CardActions>
-        <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
+        <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>שלח</Button>
       </CardActions>
       <Typography >
         <Link to="/signup">
