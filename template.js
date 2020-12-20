@@ -16,8 +16,8 @@ export default ({ markup, css }) => {
         <body dir="rtl" style="margin:0">
           <div id="root">${markup}</div>
           <style id="jss-server-side">${css}</style>
-          <script id="stripe-js" src="https://js.stripe.com/v3/" async></script>
-          <script type="text/javascript" src="/dist/bundle.js"></script>
+          <script type="application/javascript" id="stripe-js" src="https://js.stripe.com/v3/" async></script>
+          <script type="application/javascript" src="/dist/bundle.js"></script>
         </body>
       </html>`
 }

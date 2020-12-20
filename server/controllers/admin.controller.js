@@ -196,7 +196,7 @@ const increaseQuantity = async (req, res, next) => {
 }
 
 const generateFromCsv = (req, res, next) => {
-  console.log('entered generateFromCsv')
+  // console.log('entered generateFromCsv')
   const str2 =
     `303,נענע מהדרין,18.00
   309,בזיליקום מהדרין,28.00
@@ -391,6 +391,8 @@ const generateFromCsv = (req, res, next) => {
   res.json(myResult)
 
 }
+
+
 
 export default {
   generateFromCsv

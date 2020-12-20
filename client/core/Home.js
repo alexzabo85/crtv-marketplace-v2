@@ -76,10 +76,10 @@ export default function Home() {
     let shopIdLocal = ''
     let cntLocal = 0
 
-    console.log('home', 'useEffect: ' + cntLocal++);
+    // console.log('home', 'useEffect: ' + cntLocal++);
 
     if (!productList.length) {
-      console.log('calling db for list');
+      // console.log('calling db for list');
       shopApi.list(signal).then((data) => {
         if (!data || data.error) {
           throw `Error call shopApi.list: ${data}`

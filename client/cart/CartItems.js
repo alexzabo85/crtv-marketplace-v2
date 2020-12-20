@@ -131,7 +131,7 @@ export default function CartItems(props) {
   const callSendOrder = async () => {
     const jwt = auth.isAuthenticated()
     const order = await sendOrder({ t: jwt.token }, cart.getCart()/*, orderConf*/)
-    console.log('[CI99]', cart.getCart())
+    // console.log('[CI99]', cart.getCart())
     if (order.status === true) {
       alert(`ההזמנה נשלחה בהצלחה!`);
       await new Promise((resFunc, rejFunc) => { cart.emptyCart(resFunc) }) // cart.emptyCart()

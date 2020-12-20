@@ -120,7 +120,7 @@ export default function Suggestions(props) {
         {props.products.map((item, i) => {
           const idx = cart.findById(item._id)
           const el = { quantity: idx >= 0 ? cart.getCart()[idx].quantity : 0 };
-          console.log('[SG55]' + el.quantity)
+          // console.log('[SG55]' + el.quantity)
           return (
             <span key={i} >
               <Card className={classes.cart}>

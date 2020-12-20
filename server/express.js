@@ -13,6 +13,7 @@ import productRoutes from './routes/product.routes'
 import orderRoutes from './routes/order.routes'
 import auctionRoutes from './routes/auction.routes'
 import adminRoutes from './routes/admin.routes'
+import config from '../config/config'
 
 // modules for server side rendering
 import React from 'react'
@@ -25,13 +26,18 @@ import theme from './../client/theme'
 //end
 
 //comment out before building for production
-// import devBundle from './devBundle'
+import devBundle from './devBundle'
 
 const CURRENT_WORKING_DIR = process.cwd()
 const app = express()
 
 //comment out before building for production
-// devBundle.compile(app)
+if (config.env === 'development') {
+  devBundle.compile(app)
+  console.log(`express env: ${config.env}`)
+} else {
+  console.log(`express env: ${config.env}`)
+}
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json())

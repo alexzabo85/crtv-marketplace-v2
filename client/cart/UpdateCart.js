@@ -69,7 +69,7 @@ export default function UpdateCart(props) {
   const handleChange = event => {
     // const cartIndex = cart.findById(props.item._id)
     const cartIndex = index
-    console.log('[UC88]cartIndex: ' + cartIndex + ' value: ' + event.target.value)
+    // console.log('[UC88]cartIndex: ' + cartIndex + ' value: ' + event.target.value)
 
     if (event.target.value === '0' && cartIndex >= 0) {
       cart.removeItem(cartIndex)
@@ -84,7 +84,7 @@ export default function UpdateCart(props) {
         setIndex(cartIndex)
       })
     }
-    console.log('[UC65] onBlur/' + cartIndex)
+    // console.log('[UC65] onBlur/' + cartIndex)
     redirect = true
   }
 
