@@ -18,13 +18,13 @@ const useStyles = makeStyles(theme => ({
   card: {
     width: 'auto',
     margin: '24px 0px',
-    padding: '16px 40px 60px 40px',
+    // padding: '16px 40px 60px 40px',
     backgroundColor: '#80808017'
   },
   title: {
     margin: theme.spacing(2),
     color: theme.palette.openTitle,
-    fontSize: '1.2em'
+    // fontSize: '1.2em'
   },
   price: {
     color: theme.palette.text.secondary,
@@ -38,11 +38,11 @@ const useStyles = makeStyles(theme => ({
     // fontSize: '3rem',
   },
   productTitle: {
-    fontSize: '2.5rem',
+    fontSize: '1.5rem',
     marginBottom: '5px'
   },
   subheading: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     color: 'rgba(88, 114, 128, 0.67)',
     padding: '8px 10px 0',
     cursor: 'pointer',
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flex: '1 0 auto',
-    padding: '16px 8px 0px'
+    // padding: '16px 8px 0px'
   },
   cover: {
     width: 160,
@@ -161,8 +161,16 @@ export default function CartItems(props) {
                     title={item.product.name}
                   />
                   <div className={classes.details}>
+                    {/* <Button
+                      className={classes.removeButton}
+                      color="primary"
+                      onClick={removeItem(i)}
+                    >[X]</Button> */}
                     <CardContent className={classes.content}>
-                      <Typography type="title" component="h3" className={classes.productTitle} color="primary">{item.product.name}</Typography>
+                      <Typography
+                        type="title" component="h6"
+                        className={classes.productTitle} color="primary"
+                      >{item.product.name}</Typography>
                     </CardContent>
                     <div
                       className={classes.subheading}
@@ -179,7 +187,7 @@ export default function CartItems(props) {
                         }}
                         margin="normal"
                       />
-                      <Button className={classes.removeButton} color="primary" onClick={removeItem(i)}>[הסר]</Button>
+                      <Button className={classes.removeButton} color="primary" onClick={removeItem(i)}>[X]</Button>
                     </div>
                   </div>
                 </Card>

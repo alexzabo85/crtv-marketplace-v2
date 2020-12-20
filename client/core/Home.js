@@ -122,14 +122,7 @@ export default function Home() {
           <Search categories={categories} />
           <Categories categories={categories} />
         </Grid> */}
-          <Grid item xs={6} >
-            {null && <Card className={classes.bizLogo} elevation={4}>
-              <img
-                align="center"
-                src={"/api/shops/logo/" + shopId}
-                width="150px"
-              />
-            </Card>}
+          <Grid item xs={12} sm={10} md={6}>
             <Card className={classes.bizCardRoot}>
               <CardMedia
                 className={classes.bizCover}

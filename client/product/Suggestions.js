@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     // display: 'inline-flex',
     width: 'auto',
     margin: '24px 0px',
-    padding: '16px 40px 60px 40px',
+    // padding: '16px 40px 60px 40px',
     backgroundColor: '#80808017'
   },
   cart: {
@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     height: '28px'
   },
   productTitle: {
-    fontSize: '3rem',
+    // fontSize: '1.5rem',
     marginBottom: '5px'
   },
   subheading: {
@@ -132,8 +132,8 @@ export default function Suggestions(props) {
                 <div className={classes.details}>
                   <CardContent className={classes.content}>
                     <Typography
-                      variant="h3"
-                      component="h3"
+                      variant="h6"
+                      component="h6"
                       className={classes.productTitle}
                       color="primary"
                     >{item.name}
