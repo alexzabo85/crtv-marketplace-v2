@@ -9,8 +9,11 @@ const router = express.Router()
 // router.param('productId', productCtrl.productByID)
 
 
-router.route('/api/admin/generate')
-    .get(adminCtrl.generateFromCsv)
+router.route('/api/admin/generate-products')
+    .get(adminCtrl.generateProducts)
+
+router.route('/api/admin/generate-users')
+    .get(adminCtrl.generateUsers)
 
 export default router
 

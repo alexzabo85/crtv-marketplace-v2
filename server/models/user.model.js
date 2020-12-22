@@ -4,21 +4,25 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: 'Name is required'
+    // required: 'Name is required'
   },
-  email: {
-    type: String,
-    trim: true,
-    unique: 'Email already exists',
-    match: [/.+\@.+\..+/, 'Please fill a valid email address'],
-    required: 'Email is required'
-  },
-  clientNumber: {
+  phone: String,
+  address: String,
+  city: String,
+
+  accountNumber: {
     type: String,
     trim: true,
     unique: 'Client Number already exists',
     // match: [/0-9/, 'Please fill a valid Client Number'],
     // required: 'Client Number  is required'
+  },
+  email: {
+    type: String,
+    trim: true,
+    // unique: 'Email already exists',
+    // match: [/.+\@.+\..+/, 'Please fill a valid email address'],
+    // required: 'Email is required'
   },
   hashed_password: {
     type: String,
@@ -50,8 +54,8 @@ UserSchema
   })
 
 UserSchema.path('hashed_password').validate(function (v) {
-  if (this._password && this._password.length < 6) {
-    this.invalidate('password', 'Password must be at least 6 characters.')
+  if (this._password && this._password.length < 5) {
+    this.invalidate('password', 'הסיסמא חייבת להיות באורך 5 תוים לפחות.')
   }
   if (this.isNew && !this._password) {
     this.invalidate('password', 'Password is required')

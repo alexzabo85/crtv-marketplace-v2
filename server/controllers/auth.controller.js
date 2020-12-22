@@ -5,33 +5,38 @@ import config from './../../config/config'
 
 const signin = async (req, res) => {
   try {
+    // console.log(req.body.accountNumber)
     let user = await User.findOne({
-        "email": req.body.email
+      "accountNumber": req.body.accountNumber
+    })
+
+    if (!user)
+      return res.status('401').json({
+        error: "לא נמצא חשבון"
       })
 
-      if (!user)
-        return res.status('401').json({
-          error: "User not found"
-        })
+    if (!user.authenticate(req.body.password)) {
+      return res.status('401').send({
+        error: "חשבון ו/או סיסמה אינם תואמים!"
+      })
+    }
 
-      if (!user.authenticate(req.body.password)) {
-        return res.status('401').send({
-          error: "Email and password don't match."
-        })
+    const token = jwt.sign({ _id: user._id }, config.jwtSecret)
+
+    res.cookie("t", token, {
+      expire: new Date() + 9999
+    })
+
+    return res.json({
+      token,
+      user: {
+        _id: user._id,
+        accountNumber: user.accountNumber,
+        name: user.name,
+        email: user.email,
+        seller: user.seller
       }
-
-      const token = jwt.sign({
-        _id: user._id
-      }, config.jwtSecret)
-
-      res.cookie("t", token, {
-        expire: new Date() + 9999
-      })
-
-      return res.json({
-        token,
-        user: {_id: user._id, name: user.name, email: user.email, seller: user.seller}
-      })
+    })
   } catch (err) {
     return res.status('401').json({
       error: "Could not sign in"

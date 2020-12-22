@@ -17,11 +17,11 @@ const OrderSchema = new mongoose.Schema({
     trim: true,
     // required: 'Name is required'
   },
-  serial: Number,
+  documentId: Number,
   status: '',
   header: {},
   body: {},
-  // serial: {
+  // documentId: {
   //   type: Number,
   //   // trim: true,
   //   required: 'Serial Number is required'

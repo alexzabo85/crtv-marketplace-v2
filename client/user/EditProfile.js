@@ -54,6 +54,7 @@ export default function EditProfile({ match }) {
     error: ''
   })
   const jwt = auth.isAuthenticated()
+
   useEffect(() => {
     const abortController = new AbortController()
     const signal = abortController.signal
@@ -64,7 +65,13 @@ export default function EditProfile({ match }) {
       if (data && data.error) {
         setValues({ ...values, error: data.error })
       } else {
-        setValues({ ...values, name: data.name, email: data.email, clientNumber: data.clientNumber, seller: data.seller })
+        setValues({
+          ...values,
+          name: data.name,
+          email: data.email,
+          accountNumber: data.accountNumber,
+          seller: data.seller
+        })
       }
     })
     return function cleanup() {
@@ -77,9 +84,10 @@ export default function EditProfile({ match }) {
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
-      clientNumber: values.clientNumber || undefined,
+      phone: values.phone || undefined,
+      accountNumber: values.accountNumber || undefined,
       password: values.password || undefined,
-      seller: values.seller || undefined
+      // seller: values.seller || undefined
     }
     update({
       userId: match.params.userId
@@ -112,13 +120,12 @@ export default function EditProfile({ match }) {
           עריכת פרטי משתמש
           </Typography>
         <TextField id="name" label="שם לקוח" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal" /><br />
+        <TextField id="accountNumber" label="מספר לקוח" disabled className={classes.textField} value={values.accountNumber} onChange={handleChange('accountNumber')} margin="normal" /><br />
         <TextField id="email" type="email" label="דואר אלקטרוני" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
-        <TextField id="clientNumber" label="מספר לקוח" disabled className={classes.textField} value={values.clientNumber} onChange={handleChange('clientNumber')} margin="normal" /><br />
+        <TextField id="phone" label="טלפון" className={classes.textField} value={values.phone} onChange={handleChange('phone')} margin="normal" /><br />
         <TextField id="password" type="password" label="סיסמה" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
-        <Typography variant="subtitle1" className={classes.subheading}>
-          הגדרות בעל עסק
-          </Typography>
-        <FormControlLabel
+        {/* <Typography variant="subtitle1" className={classes.subheading}>הגדרות בעל עסק</Typography> */}
+        {/* <FormControlLabel
           control={
             <Switch classes={{
               checked: classes.checked,
@@ -126,9 +133,10 @@ export default function EditProfile({ match }) {
             }}
               checked={values.seller}
               onChange={handleCheck}
-            />}
+            />
+          }
           label={values.seller ? 'משתמש רגיל' : 'בעל עסק'}
-        />
+        /> */}
         <br /> {
           values.error && (<Typography component="p" color="error">
             <Icon color="error" className={classes.error}>error</Icon>

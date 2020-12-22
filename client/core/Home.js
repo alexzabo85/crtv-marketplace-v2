@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import Suggestions from './../product/Suggestions'
-import { listLatest, listCategories } from './../product/api-product.js'
-import Search from './../product/Search'
-import Categories from './../product/Categories'
-import auth from '../auth/auth-helper'
-import * as shopApi from '../shop/api-shop'
-import * as productApi from '../product/api-product'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import productListHelper from '../product/product-helper.js'
 import { Box, Card, CardContent, CardMedia } from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
 import CartIcon from '@material-ui/icons/ShoppingCart'
-import shop from '../shop/shop-helper.js'
 import Fab from '@material-ui/core/Fab';
-
+import * as shopApi from '../shop/api-shop'
+import * as productApi from '../product/api-product'
+import shop from '../shop/shop-helper.js'
+import Suggestions from './../product/Suggestions'
+// import Button from '@material-ui/core/Button'
+// import productListHelper from '../product/product-helper.js'
+// import Search from './../product/Search'
+// import Categories from './../product/Categories'
+// import auth from '../auth/auth-helper'
+// import { listLatest, listCategories } from './../product/api-product.js'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
     margin: 30,
   },
   bizLogo: theme.mixins.gutters({
@@ -35,8 +34,8 @@ const useStyles = makeStyles(theme => ({
 
   },
   bizCardDetails: {
-    display: 'flex',
-    flexDirection: 'column',
+    // display: 'flex',
+    // flexDirection: 'column',
   },
   bizCardContent: {
     flex: '1 0 auto',
@@ -54,9 +53,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-let count = 0;
 let productList = [];
-let shopId = '';
 let shopDetails;
 
 export default function Home() {
@@ -64,36 +61,25 @@ export default function Home() {
   const [suggestionTitle, setSuggestionTitle] = useState("רשימת מוצרים")
   const [categories, setCategories] = useState([])
   const [suggestions, setSuggestions] = useState([])
+  // const [shopDetails, setShopDetails] = useState({}) //note: this will not work
+  // let shopDetails; //note: this will not work
 
   useEffect(() => {
-    /**
-     * new functin is generated and called on each router entery.
-     * cntLocal will never increase its value
-     */
-
     const abortController = new AbortController()
     const signal = abortController.signal
-    let shopIdLocal = ''
-    let cntLocal = 0
 
-    // console.log('home', 'useEffect: ' + cntLocal++);
-
-    if (!productList.length) {
-      // console.log('calling db for list');
+    if (!suggestions.length) {
       shopApi.list(signal).then((data) => {
         if (!data || data.error) {
           throw `Error call shopApi.list: ${data}`
         }
-        shopId = data[0]._id;
-        shopDetails = data[0]
-        shopDetails._id = shopId
+        shopDetails = { ...data[0] }
         shop.update({ ...shopDetails })
         // await new Promise((resFunc, rejFunc) => { shop.update({ ...shopDetails }, resFunc) }) // cart.emptyCart()
-
         return true;
       })
         .then(() => {
-          return productApi.listByShop({ shopId: shopId }, signal);
+          return productApi.listByShop({ shopId: shopDetails._id }, signal);
         })
         .then((receivedProductsList) => {
           productList = [...receivedProductsList]
@@ -101,60 +87,56 @@ export default function Home() {
         })
         .catch((err) => { console.log(err) })
     } else {
-      setSuggestions(productList)
     }
-
-    // console.log(productList)
-
     return function cleanup() {
       abortController.abort()
     }
-  }, [productList])
+  }, [])
 
   return (
     <div className={classes.root}>
       <Fab className={classes.fab} href='/cart'>
         <CartIcon />
       </Fab>
-      { suggestions && suggestions.length ? (
-        <Grid container justify="center" spacing={2}>
-          {/* <Grid item xs={8} sm={8}>
+      { //console.log('productList.length:' + JSON.stringify(productList.length)) &&
+        // console.log('suggestions.length:' + JSON.stringify(suggestions.length)) &&
+        suggestions && suggestions.length ? (
+          <Grid container justify="center" spacing={2}>
+            {/* <Grid item xs={8} sm={8}>
           <Search categories={categories} />
           <Categories categories={categories} />
         </Grid> */}
-          <Grid item xs={12} sm={10} md={6}>
-            <Card className={classes.bizCardRoot}>
-              <CardMedia
-                className={classes.bizCover}
-                image={"/api/shops/logo/" + shopId}
-                // image="/static/images/cards/live-from-space.jpg"
-                // src={"/api/shops/logo/" + shopId}
-                title="Shop Logo"
-              />
-              <div className={classes.bizCardDetails}>
-                <CardContent className={classes.bizCardContent}>
-                  <Typography component="h5" variant="h5">
-                    {shopDetails.name}
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {shopDetails.address}
-                  </Typography>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    {shopDetails.phone}
-                  </Typography>
-                </CardContent>
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={11}>
-            <Suggestions products={suggestions} title={suggestionTitle} />
-          </Grid>
+            <Grid item xs={12} sm={10} md={6}>
+              <Card className={classes.bizCardRoot}>
+                <CardMedia
+                  className={classes.bizCover}
+                  image={"/api/shops/logo/" + shopDetails._id}
+                  title="Shop Logo"
+                />
+                <div className={classes.bizCardDetails}>
+                  <CardContent className={classes.bizCardContent}>
+                    <Typography component="h5" variant="h5">
+                      {shopDetails.name}
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      {shopDetails.address}
+                    </Typography>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      {shopDetails.phone}
+                    </Typography>
+                  </CardContent>
+                </div>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={11}>
+              <Suggestions products={suggestions} title={suggestionTitle} />
+            </Grid>
 
 
-        </Grid>
-      ) : (<Paper className={classes.bizLogo} elevation={4}>
-        <Typography variant="subtitle1" component="h3" color="primary"> טוען נתונים...</Typography>
-      </Paper>)
+          </Grid>
+        ) : (<Paper className={classes.bizLogo} elevation={4}>
+          <Typography variant="subtitle1" component="h3" color="primary"> טוען נתונים...</Typography>
+        </Paper>)
       }
     </div >
   )

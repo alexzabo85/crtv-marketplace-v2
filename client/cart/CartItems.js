@@ -174,7 +174,14 @@ export default function CartItems(props) {
                     </CardContent>
                     <div
                       className={classes.subheading}
-                    >כמות:<TextField
+                    >
+                      <Button
+                        className={classes.removeButton}
+                        color="primary"
+                        onClick={removeItem(i)}
+                      >[X]</Button>
+                      כמות:
+                      <TextField
                         className={classes.textField}
                         value={item.quantity}
                         onChange={handleChange(i)}
@@ -187,7 +194,7 @@ export default function CartItems(props) {
                         }}
                         margin="normal"
                       />
-                      <Button className={classes.removeButton} color="primary" onClick={removeItem(i)}>[X]</Button>
+
                     </div>
                   </div>
                 </Card>

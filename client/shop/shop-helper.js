@@ -20,13 +20,6 @@ const shop = {
     return {}
   },
 
-  emptyCart(cb) {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem('cart')
-      cb()
-    }
-  },
-
 }
 
 export default shop
