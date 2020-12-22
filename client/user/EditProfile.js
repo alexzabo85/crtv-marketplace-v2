@@ -69,6 +69,7 @@ export default function EditProfile({ match }) {
           ...values,
           name: data.name,
           email: data.email,
+          phone: data.phone,
           accountNumber: data.accountNumber,
           seller: data.seller
         })
@@ -117,7 +118,7 @@ export default function EditProfile({ match }) {
     <Card className={classes.card}>
       <CardContent>
         <Typography variant="h6" className={classes.title}>
-          עריכת פרטי משתמש
+          עידכון פרטי משתמש
           </Typography>
         <TextField id="name" label="שם לקוח" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal" /><br />
         <TextField id="accountNumber" label="מספר לקוח" disabled className={classes.textField} value={values.accountNumber} onChange={handleChange('accountNumber')} margin="normal" /><br />
@@ -145,7 +146,7 @@ export default function EditProfile({ match }) {
         }
       </CardContent>
       <CardActions>
-        <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
+        <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>עדכן</Button>
       </CardActions>
     </Card>
   )

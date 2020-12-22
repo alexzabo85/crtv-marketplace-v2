@@ -34,12 +34,12 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     marginTop: 12,
-    width: 50,
+    maxWidth: 150,
     // fontSize: '3rem',
   },
   productTitle: {
     fontSize: '1.5rem',
-    marginBottom: '5px'
+    marginBottom: '-30px'
   },
   subheading: {
     fontSize: '1.5rem',
@@ -94,7 +94,11 @@ const useStyles = makeStyles(theme => ({
   removeButton: {
     fontSize: '0.8em',
     marginBottom: '8px'
-  }
+  },
+  controls: {
+    // marginTop: '8px'
+    right: '8px'
+  },
 }))
 
 export default function CartItems(props) {
@@ -155,6 +159,11 @@ export default function CartItems(props) {
             return (
               <span key={i}>
                 <Card className={classes.cart}>
+                  <Button
+                    className={classes.removeButton}
+                    color="primary"
+                    onClick={removeItem(i)}
+                  >[X]</Button>
                   <CardMedia
                     className={classes.cover}
                     image={'/api/product/image/' + item.product._id}
@@ -173,16 +182,13 @@ export default function CartItems(props) {
                       >{item.product.name}</Typography>
                     </CardContent>
                     <div
-                      className={classes.subheading}
+                      className={classes.controls}
                     >
-                      <Button
-                        className={classes.removeButton}
-                        color="primary"
-                        onClick={removeItem(i)}
-                      >[X]</Button>
-                      כמות:
+
+                      {/* כמות: */}
                       <TextField
                         className={classes.textField}
+                        variant="outlined"
                         value={item.quantity}
                         onChange={handleChange(i)}
                         type="number"

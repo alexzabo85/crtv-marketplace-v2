@@ -97,6 +97,7 @@ export default function UpdateCart(props) {
       <TextField
         className={classes.textField}
         // id="standard-basic"
+        variant="outlined"
         defaultValue={cart.getCart()[index] && cart.getCart()[index].quantity || null}
         // onChange={() => console.count('[UC65] onChange/' + index)}
         // onChange={handleChange}

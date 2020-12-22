@@ -144,7 +144,6 @@ export default function Signin(props) {
 
   const { redirectToReferrer } = values
   if (redirectToReferrer) {
-    alert(from.pathname)
     return (<Redirect to={from} />)
   }
 
@@ -166,8 +165,8 @@ export default function Signin(props) {
                 כניסה
           </Typography>
               {/* <TextField id="email" type="email" label="דואר אלקטרוני" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br /> */}
-              <TextField id="accountNumber" label="חשבון" className={classes.textField} value={values.accountNumber} onChange={handleChange('accountNumber')} margin="normal" /><br />
-              <TextField id="password" type="password" label="סיסמה" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
+              <TextField dir="rtl" id="accountNumber" label="חשבון" variant="outlined" className={classes.textField} value={values.accountNumber} onChange={handleChange('accountNumber')} margin="normal" /><br />
+              <TextField id="password" type="password" label="סיסמה" variant="outlined" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
               <br /> {
                 values.error && (<Typography component="p" color="error">
                   <Icon color="error" className={classes.error}>error</Icon>

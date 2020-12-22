@@ -11,6 +11,7 @@ import CartIcon from '@material-ui/icons/ShoppingCart'
 import Badge from '@material-ui/core/Badge'
 import cart from './../cart/cart-helper'
 import Grid from '@material-ui/core/Grid'
+import PersonIcon from '@material-ui/icons/Person';
 
 const menuStyle = {
   fontSize: '1.8rem',
@@ -62,6 +63,38 @@ const Menu = withRouter(({ history }) => (
             {/* </Badge> */}
           </Button>
         </Link>
+
+
+        {
+          auth.isAuthenticated() && (
+            <Link to={"/user/" + auth.isAuthenticated().user._id}>
+              <Button style={{ ...isActive(history, "/cart"), ...menuStyle }}>
+                <PersonIcon />
+              </Button>
+            </Link>
+
+            // <span>
+            //   {auth.isAuthenticated().user.seller && (
+            //     <>
+            //       <Link to="/seller/shops"><Button style={{ ...isPartActive(history, "/seller/"), ...menuStyle }}>החנות שלי</Button></Link>
+            //     </>
+            //   )}
+            //   <Link to={"/user/" + auth.isAuthenticated().user._id}>
+            //     <Button style={{ ...isActive(history, "/user/" + auth.isAuthenticated().user._id), ...menuStyle }}>פרטי משתמש</Button>
+            //   </Link>
+            //   <Button
+            //     color="inherit"
+            //     onClick={() => {
+            //       auth.clearJWT(() => history.push('/'))
+            //     }}
+            //     style={menuStyle}
+            //   >יציאה</Button>
+            // </span>
+          )
+        }
+
+
+
       </div>
       <div style={{ 'position': 'absolute', 'left': '10px' }}><span style={{ 'float': 'right' }}>
         {
@@ -83,9 +116,9 @@ const Menu = withRouter(({ history }) => (
                 <Link to="/seller/shops"><Button style={{ ...isPartActive(history, "/seller/"), ...menuStyle }}>החנות שלי</Button></Link>
               </>
             )}
-            <Link to={"/user/" + auth.isAuthenticated().user._id}>
+            {/* <Link to={"/user/" + auth.isAuthenticated().user._id}>
               <Button style={{ ...isActive(history, "/user/" + auth.isAuthenticated().user._id), ...menuStyle }}>פרטי משתמש</Button>
-            </Link>
+            </Link> */}
             <Button
               color="inherit"
               onClick={() => {
